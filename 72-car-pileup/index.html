@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>72 Car Pileup — Web Demo | Heltain</title>
+  <meta name="description" content="Play the free 90-second browser demo of 72 Car Pileup, an arcade traffic chaos simulator built with Unity WebGL.">
+  <link rel="shortcut icon" href="./TemplateData/favicon.ico">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #f7f8f7;
+      color: #202421;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #176B51;
+      color: white;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .nav-top {
+      max-width: 960px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .nav-top a {
+      color: #d1fae5;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .nav-top a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+      backdrop-filter: blur(4px);
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      letter-spacing: 0.03em;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    header p {
+      font-size: 1.15rem;
+      opacity: 0.95;
+      margin-top: 0.4rem;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    main {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      flex: 1;
+    }
+
+    /* Game Stage & Screen Frame */
+    .game-section {
+      background: #151816;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      border: 1px solid #2e3530;
+    }
+
+    .game-viewport-wrap {
+      position: relative;
+      width: 100%;
+      background: #0d0f0e;
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #unity-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #111;
+      outline: none;
+    }
+
+    /* Click to Play Splash Overlay */
+    .splash-overlay {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem;
+      background-image: linear-gradient(rgba(10, 15, 12, 0.75), rgba(10, 15, 12, 0.88)), url('./preview.png');
+      transition: opacity 0.3s ease;
+    }
+
+    .splash-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .splash-title {
+      color: #ffffff;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      margin-bottom: 0.5rem;
+    }
+
+    .splash-sub {
+      color: #a7f3d0;
+      font-size: 1.05rem;
+      margin-bottom: 1.75rem;
+      max-width: 500px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+
+    .play-btn {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0.9rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 0.03em;
+    }
+
+    .play-btn:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.6);
+    }
+
+    .play-btn:active {
+      transform: translateY(1px);
+    }
+
+    .download-note {
+      color: #9ca3af;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    /* Loading state */
+    .loading-box {
+      display: none;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .loading-bar-outer {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      height: 14px;
+      overflow: hidden;
+      margin: 1rem 0 0.5rem 0;
+      padding: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .loading-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      border-radius: 9999px;
+      transition: width 0.15s ease;
+    }
+
+    .loading-status {
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Game Bottom Bar */
+    .game-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      background: #191e1b;
+      color: #9ca3af;
+      font-size: 0.85rem;
+      border-top: 1px solid #28302b;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      margin-right: 0.4rem;
+    }
+
+    .btn-fullscreen {
+      background: #252e28;
+      color: #e5e7eb;
+      border: 1px solid #37443c;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.15s;
+    }
+
+    .btn-fullscreen:hover {
+      background: #334038;
+      color: #ffffff;
+    }
+
+    /* Content Cards Grid */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e1e5e2;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .card h2 {
+      font-size: 1.35rem;
+      color: #176B51;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Keyboard Controls List */
+    .controls-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .controls-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.92rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+
+    .controls-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .key-group {
+      display: inline-flex;
+      gap: 0.25rem;
+    }
+
+    .key {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-bottom: 2px solid #9ca3af;
+      border-radius: 6px;
+      padding: 0.2rem 0.55rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .feature-pill {
+      display: inline-block;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Windows Release Showcase Banner */
+    .desktop-callout {
+      background: linear-gradient(135deg, #176B51 0%, #0f4534 100%);
+      color: white;
+      border-radius: 14px;
+      padding: 2.25rem;
+      box-shadow: 0 4px 15px rgba(23, 107, 81, 0.2);
+    }
+
+    .desktop-callout h2 {
+      font-size: 1.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .desktop-callout p {
+      opacity: 0.92;
+      max-width: 720px;
+      margin-bottom: 1.25rem;
+    }
+
+    .desktop-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .desktop-feature-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    footer {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    footer a {
+      color: #176B51;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 2.1rem;
+      }
+      .splash-title {
+        font-size: 1.6rem;
+      }
+      .play-btn {
+        padding: 0.8rem 1.8rem;
+        font-size: 1.05rem;
+      }
+      .game-viewport-wrap {
+        aspect-ratio: 4 / 3;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-top">
+      <a href="../">&#8592; Back to Heltain Apps</a>
+      <span>Browser Web Demo</span>
+    </div>
+    <span class="badge">&#9889; 90-Second Downtown Rush Hour Demo</span>
+    <h1>72 Car Pileup</h1>
+    <p>Cause, escalate, and celebrate the most spectacular physical traffic catastrophe in town!</p>
+  </header>
+
+  <main>
+    <!-- Game Canvas and Frame -->
+    <div class="game-section">
+      <div class="game-viewport-wrap" id="game-container">
+        <canvas id="unity-canvas" tabindex="-1"></canvas>
+
+        <!-- Click-to-Play Overlay (prevents heavy ~17MB download on page view) -->
+        <div class="splash-overlay" id="splash-overlay">
+          <div id="splash-prompt">
+            <h2 class="splash-title">Downtown Rush Hour</h2>
+            <p class="splash-sub">A fast-paced 90-second traffic chaos demo featuring high-density commercial boulevards, physical collisions, and chain reactions.</p>
+            <button class="play-btn" id="start-btn" onclick="startDemo()">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              PLAY DEMO
+            </button>
+            <div class="download-note">&#128266; Loads ~17 MB WebGL build. Audio starts with gameplay.</div>
+          </div>
+
+          <div class="loading-box" id="loading-box">
+            <h3 style="color:#ffffff; margin-bottom: 0.25rem;">Starting Mayhem...</h3>
+            <div class="loading-bar-outer">
+              <div class="loading-bar-inner" id="loading-bar"></div>
+            </div>
+            <div class="loading-status" id="loading-text">Downloading WebAssembly modules (0%)...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-toolbar">
+        <div class="toolbar-left">
+          <span><span class="status-dot"></span>WebGL 2.0 &bull; PhysX</span>
+          <span style="opacity: 0.75;">Click inside game window to focus controls</span>
+        </div>
+        <button class="btn-fullscreen" onclick="toggleFullscreen()" title="Toggle Fullscreen Mode">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          Fullscreen
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="grid-cards">
+      <!-- Controls -->
+      <div class="card">
+        <h2>&#127918; Controls Reference</h2>
+        <ul class="controls-list">
+          <li>
+            <span>Move Character</span>
+            <div class="key-group"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> or <span class="key">&uarr;</span><span class="key">&larr;</span><span class="key">&darr;</span><span class="key">&rarr;</span></div>
+          </li>
+          <li>
+            <span>Sprint</span>
+            <span class="key">Shift</span>
+          </li>
+          <li>
+            <span>Jump &amp; Mount Vehicles</span>
+            <span class="key">Space</span>
+          </li>
+          <li>
+            <span>Bark Ability (Panic Traffic)</span>
+            <div class="key-group"><span class="key">E</span> or <span class="key">J</span> or <span class="key">Left Click</span></div>
+          </li>
+          <li>
+            <span>Pause / Unpause</span>
+            <div class="key-group"><span class="key">P</span> or <span class="key">Esc</span></div>
+          </li>
+          <li>
+            <span>Debug Plane Events</span>
+            <div class="key-group"><span class="key">9</span> Flyover &bull; <span class="key">0</span> Crash</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mechanics & Chaos -->
+      <div class="card">
+        <h2>&#128165; Mayhem Guide</h2>
+        <p style="margin-bottom: 0.85rem; font-size: 0.93rem;">
+          Your goal is to disrupt traffic flow, start physical chain collisions, and trigger massive pileups before the 90-second round timer runs out.
+        </p>
+        <div style="margin-bottom: 0.75rem;">
+          <span class="feature-pill">&#128054; Bark Panic</span>
+          <span class="feature-pill">&#128694; Animated Pedestrians</span>
+          <span class="feature-pill">&#9992;&#65039; Emergency Plane Crashes</span>
+          <span class="feature-pill">&#128293; Catastrophic Explosions</span>
+          <span class="feature-pill">&#9889; Overdrive Chains</span>
+        </div>
+        <ul style="font-size: 0.9rem; padding-left: 1.25rem; color: #4b5563;">
+          <li><strong>Leap onto cars</strong> to ride through intersections and start trouble from above.</li>
+          <li><strong>Re-agitate traffic jams</strong>: Barking near blocked vehicles pushes impatient drivers into aggressive breakout swerves!</li>
+          <li><strong>Pedestrian Chaos</strong>: Animated sidewalk pedestrians flee from accidents and get launched comically by car impacts and explosion shockwaves!</li>
+          <li><strong>Airborne Catastrophe</strong>: Hit a 5-car pileup to trigger a flaming low-altitude plane flyover, or 10+ cars / Overdrive to witness a dramatic emergency plane crash!</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Full Game Callout -->
+    <div class="desktop-callout">
+      <h2>Experience the Full Windows Release</h2>
+      <p>
+        The complete release features massive multi-block cities, 5 playable animals with distinct special abilities, 21 vehicle archetypes, and uncapped 60+ FPS physics tailored for the legendary 72-car pileup achievement.
+      </p>
+      <div class="desktop-features">
+        <div class="desktop-feature-item">
+          <strong>3 Distinct Map Themes</strong><br>Suburban Crossroads, Industrial Rail Yard, &amp; Downtown High-Rise.
+        </div>
+        <div class="desktop-feature-item">
+          <strong>5 Playable Animals</strong><br>Dog, Agility Cat, Heavy Cow, Squeal Pig, and Stomp Horse.
+        </div>
+        <div class="desktop-feature-item">
+          <strong>72-Car Pileup Goal</strong><br>Endless pileup escalation with cinematic slow motion &amp; debris physics.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      &copy; 2026 Heltain. Built with Unity WebGL &bull; CC0 Assets by Kenney.
+    </div>
+    <div>
+      <a href="../">&#8592; Back to Heltain Home</a>
+    </div>
+  </footer>
+
+  <script>
+    var unityInstanceRef = null;
+    var demoStarted = false;
+
+    function startDemo() {
+      if (demoStarted) return;
+      demoStarted = true;
+
+      var promptBox = document.getElementById("splash-prompt");
+      var loadingBox = document.getElementById("loading-box");
+      var loadingBar = document.getElementById("loading-bar");
+      var loadingText = document.getElementById("loading-text");
+      var overlay = document.getElementById("splash-overlay");
+      var canvas = document.getElementById("unity-canvas");
+
+      promptBox.style.display = "none";
+      loadingBox.style.display = "block";
+
+      var buildUrl = "./Build";
+      var loaderUrl = buildUrl + "/WebDemo.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/WebDemo.data.unityweb",
+        frameworkUrl: buildUrl + "/WebDemo.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebDemo.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "PileupProto",
+        productName: "72 Car Pileup",
+        productVersion: "1.0",
+        showBanner: function(msg, type) {
+          if (type === "error") console.error(msg);
+          else console.warn(msg);
+        }
+      };
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = function() {
+        createUnityInstance(canvas, config, function(progress) {
+          var pct = Math.round(100 * progress);
+          loadingBar.style.width = pct + "%";
+          if (pct < 60) {
+            loadingText.textContent = "Downloading WebAssembly modules (" + pct + "%)...";
+          } else if (pct < 95) {
+            loadingText.textContent = "Unpacking city geometry & audio (" + pct + "%)...";
+          } else {
+            loadingText.textContent = "Initializing simulation engine...";
+          }
+        }).then(function(unityInstance) {
+          unityInstanceRef = unityInstance;
+          overlay.classList.add("hidden");
+          canvas.focus();
+        }).catch(function(err) {
+          loadingText.textContent = "Error loading WebGL: " + err;
+          console.error(err);
+        });
+      };
+      script.onerror = function() {
+        loadingText.textContent = "Failed to load WebDemo.loader.js. Please refresh.";
+      };
+      document.body.appendChild(script);
+    }
+
+    function toggleFullscreen() {
+      if (unityInstanceRef) {
+        unityInstanceRef.SetFullscreen(1);
+      } else {
+        var container = document.getElementById("game-container");
+        if (!document.fullscreenElement) {
+          container.requestFullscreen().catch(function(err) {
+            console.warn(err);
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    }
+  </script>
+</body>
+</html>
