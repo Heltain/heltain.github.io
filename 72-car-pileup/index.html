@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>72 Car Pileup — Web Demo | Heltain</title>
-  <meta name="description" content="Play the free 90-second browser demo of 72 Car Pileup, an arcade traffic chaos simulator built with Unity WebGL.">
+  <meta name="description" content="Play the free 3-minute browser demo of 72 Car Pileup, an arcade traffic chaos simulator built with Unity WebGL.">
   <link rel="shortcut icon" href="./TemplateData/favicon.ico">
 
   <style>
@@ -436,7 +439,7 @@
       <a href="../">&#8592; Back to Heltain Apps</a>
       <span>Browser Web Demo</span>
     </div>
-    <span class="badge">&#9889; 90-Second Downtown Rush Hour Demo</span>
+    <span class="badge">&#9889; 3-Minute Downtown Rush Hour Demo</span>
     <h1>72 Car Pileup</h1>
     <p>Cause, escalate, and celebrate the most spectacular physical traffic catastrophe in town!</p>
   </header>
@@ -451,7 +454,7 @@
         <div class="splash-overlay" id="splash-overlay">
           <div id="splash-prompt">
             <h2 class="splash-title">Downtown Rush Hour</h2>
-            <p class="splash-sub">A fast-paced 90-second traffic chaos demo featuring high-density commercial boulevards, physical collisions, and chain reactions.</p>
+            <p class="splash-sub">A fast-paced 3-minute (180-second) traffic chaos demo featuring high-density commercial boulevards, physical collisions, and chain reactions.</p>
             <button class="play-btn" id="start-btn" onclick="startDemo()">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z"/>
@@ -512,12 +515,8 @@
             <div class="key-group"><span class="key">Q</span> or <span class="key">K</span> or <span class="key">Right Click</span></div>
           </li>
           <li>
-            <span>Pause / Unpause</span>
+            <span>Pause / Resume</span>
             <div class="key-group"><span class="key">P</span> or <span class="key">Esc</span></div>
-          </li>
-          <li>
-            <span>Debug Plane Events</span>
-            <div class="key-group"><span class="key">9</span> Flyover &bull; <span class="key">0</span> Crash</div>
           </li>
         </ul>
       </div>
@@ -526,20 +525,21 @@
       <div class="card">
         <h2>&#128165; Mayhem Guide</h2>
         <p style="margin-bottom: 0.85rem; font-size: 0.93rem;">
-          Your goal is to disrupt traffic flow, start physical chain collisions, and trigger massive pileups before the 90-second round timer runs out.
+          Your goal is to disrupt traffic flow, start physical chain collisions, scatter protesters, and trigger massive pileups before the 3-minute (180-second) round timer runs out.
         </p>
         <div style="margin-bottom: 0.75rem;">
-          <span class="feature-pill">&#128054; Bark Panic</span>
-          <span class="feature-pill">&#128694; Animated Pedestrians</span>
+          <span class="feature-pill">&#128054; Bark Knockdowns</span>
+          <span class="feature-pill">&#128293; Contagious Cartoon Fire</span>
+          <span class="feature-pill">&#128227; Anti-Animal Protests (+500)</span>
           <span class="feature-pill">&#9992;&#65039; Emergency Plane Crashes</span>
-          <span class="feature-pill">&#128293; Catastrophic Explosions</span>
           <span class="feature-pill">&#9889; Overdrive Chains</span>
         </div>
         <ul style="font-size: 0.9rem; padding-left: 1.25rem; color: #4b5563;">
-          <li><strong>Leap onto cars</strong> to ride through intersections and start trouble from above.</li>
+          <li><strong>Bark Knockdowns</strong>: Barking directly knocks down nearby pedestrians with hilarious slapstick ragdoll tumbles. Accessories like crutches and signs fly into the air!</li>
+          <li><strong>Contagious Cartoon Fire</strong>: Chaos Burst shockwaves ignite slapstick flames that spread from pedestrian to pedestrian on physical contact before they stop-drop-and-roll!</li>
+          <li><strong>Anti-Animal Protests</strong>: Cause mayhem and citizen groups will march in with picket signs opposing your animal! Knock down or scatter 70% of the group for an instant <strong>+500 Disruption Bonus</strong> and +25 Mayhem!</li>
           <li><strong>Re-agitate traffic jams</strong>: Barking near blocked vehicles pushes impatient drivers into aggressive breakout swerves!</li>
-          <li><strong>Pedestrian Chaos</strong>: Animated sidewalk pedestrians flee from accidents and get launched comically by car impacts and explosion shockwaves!</li>
-          <li><strong>Airborne Catastrophe</strong>: Cause genuine traffic chaos (14 collided vehicles for flyover, 24 for dramatic emergency crash) to trigger cinematic aircraft events!</li>
+          <li><strong>Airborne Catastrophe</strong>: Cause genuine traffic chaos (10 collided vehicles for flyover, 18 for dramatic emergency crash) to trigger cinematic aircraft events!</li>
         </ul>
       </div>
     </div>
@@ -576,6 +576,107 @@
   <script>
     var unityInstanceRef = null;
     var demoStarted = false;
+    var canvasEl = document.getElementById("unity-canvas");
+    var containerEl = document.getElementById("game-container");
+
+    function focusGameCanvas() {
+      if (!canvasEl) canvasEl = document.getElementById("unity-canvas");
+      if (!canvasEl) return;
+      try {
+        canvasEl.focus({ preventScroll: true });
+      } catch (e) {
+        canvasEl.focus();
+      }
+    }
+
+    if (canvasEl) {
+      // Prevent browser context menu on right-click over the active Unity canvas so Right Click triggers Chaos Burst cleanly
+      canvasEl.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+        focusGameCanvas();
+        return false;
+      });
+      canvasEl.addEventListener("mousedown", function() {
+        if (demoStarted) focusGameCanvas();
+      });
+      canvasEl.addEventListener("pointerdown", function() {
+        if (demoStarted) focusGameCanvas();
+      });
+    }
+
+    if (containerEl) {
+      containerEl.addEventListener("contextmenu", function(e) {
+        if (demoStarted || e.target === canvasEl) {
+          e.preventDefault();
+          focusGameCanvas();
+          return false;
+        }
+      });
+    }
+
+    document.addEventListener("fullscreenchange", function() {
+      if (demoStarted) {
+        setTimeout(focusGameCanvas, 50);
+      }
+    });
+
+    window.addEventListener("focus", function() {
+      if (demoStarted && unityInstanceRef) {
+        focusGameCanvas();
+      }
+    });
+
+    var buildVersion = "20261101-v3";
+
+    // Ensure browser HTTP cache always revalidates Unity build artifacts so .wasm and .data never get out of sync
+    if (window.fetch) {
+      var origFetch = window.fetch.bind(window);
+      window.fetch = function(input, init) {
+        var url = (typeof input === "string") ? input : (input && input.url ? input.url : "");
+        if (url && (url.indexOf("/Build/") !== -1 || url.indexOf(".unityweb") !== -1)) {
+          init = Object.assign({}, init || {}, { cache: "no-cache" });
+        }
+        return origFetch(input, init);
+      };
+    }
+
+    function purgeStaleUnityCache() {
+      var cleanupPromises = [];
+      try {
+        if (window.caches && typeof window.caches.keys === "function") {
+          cleanupPromises.push(
+            window.caches.keys().then(function(keys) {
+              return Promise.all(
+                keys.filter(function(k) { return k.indexOf("UnityCache") === 0; })
+                    .map(function(k) { return window.caches.delete(k); })
+              );
+            }).catch(function() {})
+          );
+        }
+      } catch (e) {}
+      try {
+        if (window.indexedDB && typeof window.indexedDB.deleteDatabase === "function") {
+          cleanupPromises.push(new Promise(function(resolve) {
+            try {
+              var req = window.indexedDB.deleteDatabase("UnityCache");
+              req.onsuccess = req.onerror = req.onblocked = function() { resolve(); };
+              setTimeout(resolve, 300);
+            } catch (e) {
+              resolve();
+            }
+          }));
+        }
+      } catch (e) {}
+      return Promise.all(cleanupPromises);
+    }
+
+    function formatLoadError(err) {
+      var raw = String(err || "Unknown error");
+      if (raw.length > 220) {
+        raw = raw.substring(0, 220) + "... (see browser console for full trace)";
+      }
+      return "Error loading WebGL build: " + raw;
+    }
 
     function startDemo() {
       if (demoStarted) return;
@@ -590,64 +691,93 @@
 
       promptBox.style.display = "none";
       loadingBox.style.display = "block";
+      focusGameCanvas();
 
       var buildUrl = "./Build";
-      var loaderUrl = buildUrl + "/WebDemo.loader.js";
+      var loaderUrl = buildUrl + "/WebDemo.loader.js?v=" + buildVersion;
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/WebDemo.data.unityweb",
-        frameworkUrl: buildUrl + "/WebDemo.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebDemo.wasm.unityweb",
+        dataUrl: buildUrl + "/WebDemo.data.unityweb?v=" + buildVersion,
+        frameworkUrl: buildUrl + "/WebDemo.framework.js.unityweb?v=" + buildVersion,
+        codeUrl: buildUrl + "/WebDemo.wasm.unityweb?v=" + buildVersion,
         streamingAssetsUrl: "StreamingAssets",
         companyName: "PileupProto",
         productName: "72 Car Pileup",
-        productVersion: "1.0",
+        productVersion: "1.3.0-" + buildVersion,
+        cacheControl: function() {
+          return "no-store";
+        },
+        matchWebGLToCanvasSize: true,
         showBanner: function(msg, type) {
           if (type === "error") console.error(msg);
           else console.warn(msg);
         }
       };
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = function() {
-        createUnityInstance(canvas, config, function(progress) {
-          var pct = Math.round(100 * progress);
-          loadingBar.style.width = pct + "%";
-          if (pct < 60) {
-            loadingText.textContent = "Downloading WebAssembly modules (" + pct + "%)...";
-          } else if (pct < 95) {
-            loadingText.textContent = "Unpacking city geometry & audio (" + pct + "%)...";
-          } else {
-            loadingText.textContent = "Initializing simulation engine...";
-          }
-        }).then(function(unityInstance) {
-          unityInstanceRef = unityInstance;
-          overlay.classList.add("hidden");
-          canvas.focus();
-        }).catch(function(err) {
-          loadingText.textContent = "Error loading WebGL: " + err;
-          console.error(err);
-        });
-      };
-      script.onerror = function() {
-        loadingText.textContent = "Failed to load WebDemo.loader.js. Please refresh.";
-      };
-      document.body.appendChild(script);
+      var cacheReadyPromise = Promise.resolve();
+      try {
+        if (localStorage.getItem("pileup_webgl_build_version") !== buildVersion) {
+          cacheReadyPromise = purgeStaleUnityCache().then(function() {
+            try { localStorage.setItem("pileup_webgl_build_version", buildVersion); } catch (e) {}
+          });
+        }
+      } catch (e) {
+        cacheReadyPromise = purgeStaleUnityCache();
+      }
+
+      cacheReadyPromise.then(function() {
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = function() {
+          createUnityInstance(canvas, config, function(progress) {
+            var pct = Math.round(100 * progress);
+            loadingBar.style.width = pct + "%";
+            if (pct < 60) {
+              loadingText.textContent = "Downloading WebAssembly modules (" + pct + "%)...";
+            } else if (pct < 95) {
+              loadingText.textContent = "Unpacking city geometry & audio (" + pct + "%)...";
+            } else {
+              loadingText.textContent = "Initializing simulation engine...";
+            }
+          }).then(function(unityInstance) {
+            unityInstanceRef = unityInstance;
+            overlay.classList.add("hidden");
+            loadingBox.style.display = "none";
+            focusGameCanvas();
+            setTimeout(focusGameCanvas, 100);
+          }).catch(function(err) {
+            console.error(err);
+            purgeStaleUnityCache();
+            loadingText.textContent = formatLoadError(err) + " Please press Ctrl+F5 to refresh.";
+          });
+        };
+        script.onerror = function() {
+          loadingText.textContent = "Failed to load WebDemo.loader.js. Please refresh (Ctrl+F5).";
+        };
+        document.body.appendChild(script);
+      });
     }
 
     function toggleFullscreen() {
-      if (unityInstanceRef) {
-        unityInstanceRef.SetFullscreen(1);
-      } else {
-        var container = document.getElementById("game-container");
-        if (!document.fullscreenElement) {
-          container.requestFullscreen().catch(function(err) {
-            console.warn(err);
+      var container = document.getElementById("game-container");
+      if (!document.fullscreenElement) {
+        if (container && container.requestFullscreen) {
+          container.requestFullscreen().then(function() {
+            setTimeout(focusGameCanvas, 60);
+          }).catch(function(err) {
+            if (unityInstanceRef) unityInstanceRef.SetFullscreen(1);
+            setTimeout(focusGameCanvas, 60);
           });
-        } else {
-          document.exitFullscreen();
+        } else if (unityInstanceRef) {
+          unityInstanceRef.SetFullscreen(1);
+          setTimeout(focusGameCanvas, 60);
         }
+      } else {
+        document.exitFullscreen().then(function() {
+          setTimeout(focusGameCanvas, 60);
+        }).catch(function(err) {
+          console.warn(err);
+        });
       }
     }
   </script>
