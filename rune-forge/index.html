@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rune Forge | Heltain</title>
+    <meta name="description" content="Rune Forge is an elemental fantasy logic puzzle game for Android featuring 400 campaign puzzles, standard and irregular regions, Viking blacksmith celebrations, and online leaderboards.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f8f7;
+            color: #202421;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        header {
+            background: #176B51;
+            color: white;
+            padding: 3rem 1.5rem 2.5rem;
+            text-align: center;
+        }
+
+        header div {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.6rem;
+            letter-spacing: 0.04em;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.15rem;
+            opacity: 0.92;
+        }
+
+        .breadcrumbs {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+
+        a {
+            color: #176B51;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .hero-card {
+            background: white;
+            border: 1px solid #e1e5e2;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-header {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .app-icon {
+            width: 84px;
+            height: 84px;
+            border-radius: 18px;
+            border: 1px solid #e1e5e2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
+        }
+
+        .hero-title-area h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #176B51;
+        }
+
+        .hero-title-area p {
+            margin: 0.25rem 0 0;
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8ece9;
+            color: #202421;
+            padding: 0.2rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-status {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #176B51;
+            color: #ffffff;
+            padding: 0.65rem 1.35rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            background: #12543f;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: white;
+            color: #176B51;
+            border: 1px solid #176B51;
+            padding: 0.65rem 1.35rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f7f4;
+            text-decoration: none;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid #e1e5e2;
+            border-radius: 12px;
+            padding: 1.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-card h2 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: #176B51;
+            font-size: 1.5rem;
+        }
+
+        .section-card h3 {
+            margin-top: 1.4rem;
+            margin-bottom: 0.35rem;
+            font-size: 1.15rem;
+            color: #202421;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .feature-item {
+            background: #fcfdfc;
+            border: 1px solid #e8ede9;
+            border-radius: 8px;
+            padding: 1.2rem;
+        }
+
+        .feature-item h3 {
+            margin-top: 0;
+            margin-bottom: 0.4rem;
+            color: #176B51;
+            font-size: 1.1rem;
+        }
+
+        .feature-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .tier-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 0.5rem;
+        }
+
+        .tier-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        .tier-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tier-title {
+            font-weight: 600;
+            color: #202421;
+        }
+
+        .tier-meta {
+            color: #666;
+            font-size: 0.92rem;
+        }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .screenshot-card {
+            background: #fcfdfc;
+            border: 1px solid #e1e5e2;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid #e8ede9;
+        }
+
+        .screenshot-card figcaption {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: #555;
+            background: white;
+            line-height: 1.4;
+        }
+
+        .callout {
+            background: #eef7f3;
+            border-left: 4px solid #176B51;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.25rem 0;
+            font-size: 0.98rem;
+        }
+
+        footer {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 3rem;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e1e5e2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        footer div {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>Rune Forge</h1>
+        <p>Heltain &bull; Fantasy Logic Puzzle Game for Android</p>
+    </div>
+</header>
+
+<div class="breadcrumbs">
+    <a href="/">&larr; Return to Heltain</a>
+</div>
+
+<main>
+
+    <section class="hero-card">
+        <div class="hero-header">
+            <img src="/rune-forge/images/icon.png" alt="Rune Forge icon" class="app-icon">
+            <div class="hero-title-area">
+                <h2>Rune Forge</h2>
+                <p>Craft Ancient Runes. Master Elemental Logic.</p>
+                <div class="badges">
+                    <span class="badge">Android</span>
+                    <span class="badge">Offline-First</span>
+                    <span class="badge">Sudoku Variant</span>
+                    <span class="badge badge-status">Google Play Internal Testing</span>
+                </div>
+            </div>
+        </div>
+
+        <p>
+            <strong>Rune Forge</strong> merges the intellectual elegance of classic Sudoku with the atmospheric
+            depth of an ancient Norse blacksmith's workshop. In place of plain digits, you weave nine elemental
+            runes into stone and ember, carving order out of chaos across classical rectangular grids and
+            organically shaped irregular territories.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#features" class="btn-primary">Game Features</a>
+            <a href="/rune-forge/privacy/" class="btn-secondary">Privacy Policy</a>
+            <a href="mailto:heltain.apps@gmail.com?subject=Rune%20Forge%20Tester%20Inquiry" class="btn-secondary">Request Tester Access</a>
+        </div>
+    </section>
+
+    <section class="section-card" id="features">
+        <h2>Game Features</h2>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <h3>400 Handcrafted Puzzles</h3>
+                <p>A comprehensive campaign scaling from accessible introductory trials to towering master-level deductions.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Standard &amp; Irregular Regions</h3>
+                <p>Conquer classical uniform regional blocks alongside organic, free-form irregular zones that redefine spatial strategy.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Nine Elemental Runes</h3>
+                <p>Manipulate Flame, Tide, Stone, Zephyr, Sun, Glacial, Thunder, Astral, and Nether runes with distinct silhouettes and colors.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Viking Forge Strike</h3>
+                <p>Celebrate every victory with an animated Viking blacksmith striking his glowing anvil to ring in your earned Forge Hammers.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Adaptive Smart Toolbar</h3>
+                <p>A dynamic floating toolbar docks intelligently beside your active cell without obscuring neighbouring board spaces.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Ad-Free Sunday</h3>
+                <p>Every Sunday (local time), all advertisements are automatically silenced, creating a pure sanctuary for calm puzzle solving.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2>Three Progressive Difficulty Tiers</h2>
+        <p>
+            Rune Forge is structured to welcome puzzle newcomers while presenting a formidable challenge
+            to veteran Sudoku masters:
+        </p>
+
+        <ul class="tier-list">
+            <li>
+                <div class="tier-title">Apprentice (4&times;4)</div>
+                <div class="tier-meta">40 levels &bull; 16 cells &bull; 2&times;2 regular and irregular regions &bull; Runes: Flame, Tide, Stone, Zephyr</div>
+                <p style="margin: 0.35rem 0 0; font-size: 0.95rem; color: #444;">
+                    Designed for swift, focused deduction. Learn the interaction between regional boundaries and candidate elimination.
+                </p>
+            </li>
+            <li>
+                <div class="tier-title">Adept (6&times;6)</div>
+                <div class="tier-meta">120 levels &bull; 36 cells &bull; 3&times;2 regular and irregular regions &bull; Runes: + Sun, Glacial</div>
+                <p style="margin: 0.35rem 0 0; font-size: 0.95rem; color: #444;">
+                    Deeper complexity requiring multi-step row, column, and territory intersections.
+                </p>
+            </li>
+            <li>
+                <div class="tier-title">Archmage (9&times;9)</div>
+                <div class="tier-meta">240 levels &bull; 81 cells &bull; 3&times;3 regular and irregular regions &bull; Runes: + Thunder, Astral, Nether</div>
+                <p style="margin: 0.35rem 0 0; font-size: 0.95rem; color: #444;">
+                    The ultimate trial of logical reasoning. Test your mastery across full-scale regular and labyrinthine irregular boards.
+                </p>
+            </li>
+        </ul>
+    </section>
+
+    <section class="section-card">
+        <h2>Forge Hammers &amp; Scoring</h2>
+        <p>
+            Every completed level rewards performance with up to <strong>three Forge Hammers</strong> based on
+            elapsed time against par standards, accuracy, and independent deduction:
+        </p>
+        <ul>
+            <li><strong>Par Time Target:</strong> Solve swiftly to earn your full complement of Forge Hammers.</li>
+            <li><strong>Master Runesmith Bonus:</strong> Solve the puzzle purely on your own merit without activating mistake warnings or hint reveals to secure top score multipliers.</li>
+            <li><strong>Universal Celebration:</strong> Each earned Forge Hammer rings the anvil once in the Viking blacksmith's celebration sequence against vibrant elemental effects.</li>
+        </ul>
+    </section>
+
+    <section class="section-card">
+        <h2>Accessibility &amp; Customization</h2>
+        <p>
+            Play comfortably in any lighting condition, screen size, or playstyle preference:
+        </p>
+        <ul>
+            <li><strong>Global Text Scaling:</strong> Choose between four responsive text sizes: <em>Small (115%)</em>, <em>Medium (140%, default)</em>, <em>Large (165%)</em>, or <em>Extra Large (190%)</em>.</li>
+            <li><strong>Mistake Feedback Modes:</strong>
+                <ul>
+                    <li><em>Traditional:</em> Pure logic. No error highlights or warnings; your deductions stand unassisted.</li>
+                    <li><em>Show Conflicts:</em> Visually flags duplicate runes within rows, columns, or regions.</li>
+                    <li><em>Auto-Check (Assisted):</em> Real-time verification of placed runes against the true solution.</li>
+                </ul>
+            </li>
+            <li><strong>Notes Mode:</strong> Pencil in candidate runes within cells to map out complex deductive branches.</li>
+        </ul>
+    </section>
+
+    <section class="section-card">
+        <h2>Online Leaderboards &amp; Cloud Sync</h2>
+        <p>
+            Rune Forge is built with an offline-first architecture: campaign progression, high scores, and puzzle states
+            are always preserved locally on your Android device.
+        </p>
+        <p>
+            When online connectivity is available, the game seamlessly synchronizes with Google Firebase backends to offer
+            competitive global leaderboards across three distinct categories:
+        </p>
+        <ul>
+            <li><strong>First-Attempt:</strong> Pure, unassisted first completions on fresh puzzles.</li>
+            <li><strong>Replay:</strong> High-score rankings on replayed puzzles.</li>
+            <li><strong>Assisted:</strong> Completions aided by arcane hints or Auto-Check verification.</li>
+        </ul>
+        <p>
+            Online profiles use anonymous guest authentication and randomized fantasy nicknames (e.g. <em>✦ Thunder Forger 935</em>).
+            You can reroll your random nickname at any time, and you can permanently delete your online profile and leaderboard data
+            directly from the in-game Player Profile menu.
+        </p>
+    </section>
+
+    <section class="section-card">
+        <h2>Visual Showcase</h2>
+        <div class="screenshots">
+            <figure class="screenshot-card">
+                <img src="/rune-forge/images/splash.png" alt="Rune Forge title screen and glowing anvil artwork">
+                <figcaption>Rune Forge Title Screen with glowing elemental runes and anvil.</figcaption>
+            </figure>
+
+            <figure class="screenshot-card">
+                <img src="/rune-forge/images/screenshot_board.png" alt="Rune Forge 6x6 Adept puzzle board with elemental runes">
+                <figcaption>Adept 6&times;6 puzzle board showing elemental rune glyphs and region borders.</figcaption>
+            </figure>
+
+            <figure class="screenshot-card">
+                <img src="/rune-forge/images/screenshot_toolbar.png" alt="Rune Forge Smart Toolbar docked beside selected cell">
+                <figcaption>Ergonomic Smart Toolbar dynamically positioning beside the active cell.</figcaption>
+            </figure>
+
+            <figure class="screenshot-card">
+                <img src="/rune-forge/images/screenshot_victory.png" alt="Viking blacksmith Forge Strike victory sequence">
+                <figcaption>Viking Forge Strike victory celebration awarding Forge Hammers.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2>Availability &amp; Distribution</h2>
+        <div class="callout">
+            <strong>Release Status:</strong> Rune Forge is currently in active distribution through the
+            <strong>Google Play Internal Testing Track</strong> for Android devices (Android 7.0 Nougat and above, Target SDK 36).
+        </div>
+        <p>
+            If you are interested in joining our internal testing group, experiencing pre-release builds,
+            or providing feedback, please contact us at:
+        </p>
+        <p>
+            <a href="mailto:heltain.apps@gmail.com?subject=Rune%20Forge%20Internal%20Testing%20Access">heltain.apps@gmail.com</a>
+        </p>
+        <p style="font-size: 0.92rem; color: #666;">
+            <em>Note on Monetization:</em> Rune Forge currently features standard AdMob banner and between-level
+            interstitials with automatic Ad-Free Sunday suppression. Optional rewarded magical boons are planned for
+            future major content releases and are not currently active in the game.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <div>&copy; 2026 Heltain</div>
+    <div>
+        <a href="/rune-forge/privacy/">Privacy Policy</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="mailto:heltain.apps@gmail.com">Contact Support</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="/">Home</a>
+    </div>
+</footer>
+
+</body>
+</html>

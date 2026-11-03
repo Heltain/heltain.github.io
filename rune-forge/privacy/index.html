@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rune Forge Privacy Policy | Heltain</title>
+    <meta name="description" content="Privacy Policy for Rune Forge, an Android fantasy logic puzzle game published by Heltain.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f8f7;
+            color: #202421;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        header {
+            background: #176B51;
+            color: white;
+            padding: 2.5rem 1.5rem;
+        }
+
+        header div {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 0.35rem 0 0;
+            opacity: 0.9;
+            font-size: 1.05rem;
+        }
+
+        .breadcrumbs {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3.5rem;
+        }
+
+        h2 {
+            margin-top: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: #176B51;
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            margin-top: 1.4rem;
+            margin-bottom: 0.35rem;
+            font-size: 1.15rem;
+            color: #202421;
+        }
+
+        a {
+            color: #176B51;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .updated {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        code {
+            background: #e8ece9;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.92em;
+        }
+
+        ul {
+            padding-left: 1.4rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        .callout {
+            background: #eef7f3;
+            border-left: 4px solid #176B51;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.25rem 0;
+            font-size: 0.98rem;
+        }
+
+        footer {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 3rem;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e1e5e2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        footer div {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>Rune Forge Privacy Policy</h1>
+        <p>Heltain</p>
+    </div>
+</header>
+
+<div class="breadcrumbs">
+    <a href="/rune-forge/">&larr; Return to Rune Forge</a> &bull; <a href="/">Heltain Home</a>
+</div>
+
+<main>
+
+    <p class="updated"><strong>Effective date:</strong> November 3, 2026</p>
+
+    <p>
+        <strong>Rune Forge</strong> (Android package <code>com.heltain.runeforge</code>) is an elemental fantasy logic puzzle game
+        published by <strong>Heltain</strong>. This Privacy Policy describes how Rune Forge handles player data, local storage,
+        optional Google Firebase cloud services (anonymous authentication, private player profiles, and competitive leaderboards),
+        advertising delivered via Google AdMob, and your options for managing or deleting your data.
+    </p>
+
+    <div class="callout">
+        <strong>Privacy Overview:</strong> Rune Forge is built with an offline-first architecture. You can play all 400 campaign puzzles
+        without creating an account, providing an email address, or sharing personal information. When online features are used,
+        the game uses anonymous guest identifiers and randomized fantasy nicknames.
+    </div>
+
+    <h2>1. Anonymous Player Authentication</h2>
+    <p>
+        Rune Forge does not require you to register with your real name, email address, phone number, password, or third-party
+        social media account.
+    </p>
+    <p>
+        When online services initialize, the game uses <strong>Google Firebase Authentication</strong> to create an anonymous
+        guest session. Firebase generates an internal, pseudonymous user identifier (UID) that uniquely identifies your guest
+        session. This UID allows your game progress to synchronize with cloud servers and associates your scores with the online
+        leaderboards without exposing your personal identity.
+    </p>
+
+    <h2>2. Randomized Player Nicknames</h2>
+    <p>
+        To preserve anonymity while providing community leaderboards, every player is assigned a procedurally generated fantasy
+        nickname (such as <em>✦ Thunder Forger 935</em> or <em>✦ Frost Alchemist 781</em>).
+    </p>
+    <ul>
+        <li><strong>No Free-Form Text Entry:</strong> Nicknames are generated strictly from curated lists of fantasy adjectives, titles, and numbers. Because players cannot enter arbitrary text, no personally identifiable information (PII) can be shared through nicknames.</li>
+        <li><strong>Player-Controlled Rerolls:</strong> You can reroll a new random fantasy nickname at any time inside the game from the Player Profile menu:
+            <code>⚙ Settings &rarr; 👤 Player Profile &rarr; 🎲 Reroll Random Nickname</code>
+        </li>
+    </ul>
+
+    <h2>3. Private Player Profile Data</h2>
+    <p>
+        When connected to the internet, Rune Forge synchronizes non-sensitive gameplay statistics to <strong>Google Cloud Firestore</strong>
+        in a private user document located at <code>users/{userId}</code>, where <code>{userId}</code> is your anonymous Firebase UID.
+    </p>
+    <ul>
+        <li><strong>Strict Owner-Only Access:</strong> Cloud Firestore Security Rules enforce that private profile documents can only be read or written by the authenticated user whose UID matches the document ID (<code>request.auth.uid == userId</code>). Other players cannot read, query, or view your private profile document.</li>
+        <li><strong>Stored Information:</strong> The private profile document contains only aggregate campaign progress: your total earned stars, completed puzzle count, highest unlocked difficulty tier, and active fantasy nickname. It does not contain personal contact data or hardware identifiers.</li>
+    </ul>
+
+    <h2>4. Public Competitive Leaderboards</h2>
+    <p>
+        Rune Forge features optional global competitive leaderboards so players can compare solving performance.
+        Leaderboard records are stored in public Cloud Firestore collections categorized by board size and score category:
+    </p>
+    <ul>
+        <li><code>leaderboards_4_first</code>, <code>leaderboards_4_replay</code>, <code>leaderboards_4_assisted</code> (Apprentice 4&times;4)</li>
+        <li><code>leaderboards_6_first</code>, <code>leaderboards_6_replay</code>, <code>leaderboards_6_assisted</code> (Adept 6&times;6)</li>
+        <li><code>leaderboards_9_first</code>, <code>leaderboards_9_replay</code>, <code>leaderboards_9_assisted</code> (Archmage 9&times;9)</li>
+    </ul>
+    <p><strong>Publicly Visible Information:</strong> Other players can see only the following leaderboard fields:</p>
+    <ul>
+        <li>Your generated fantasy nickname (e.g. <em>✦ Thunder Forger 935</em>).</li>
+        <li>Your calculated score and cumulative elapsed puzzle time.</li>
+        <li>Total stars earned and highest tier unlocked.</li>
+        <li>Timestamp of your latest score submission.</li>
+    </ul>
+    <p><strong>Leaderboard Categories:</strong></p>
+    <ul>
+        <li><strong>First-Attempt:</strong> Clean, unassisted solutions completed on a player's first attempt on a puzzle.</li>
+        <li><strong>Replay:</strong> Subsequent completions of previously solved puzzles.</li>
+        <li><strong>Assisted:</strong> Completions where mistake feedback (Auto-Check) or arcane hints were used during deduction.</li>
+    </ul>
+
+    <h2>5. Local Storage &amp; Offline Play</h2>
+    <p>
+        Rune Forge is fully functional without an internet connection. All 400 puzzle definitions, solutions, active puzzle board states,
+        star achievements, and user preferences (such as text size scaling and mistake warning modes) are stored locally in private
+        sandboxed application storage on your Android device.
+    </p>
+    <p>
+        When you play offline, no network requests are sent. If you re-establish network connectivity, the game will synchronize your
+        pending campaign stars and eligible leaderboard scores in the background.
+    </p>
+
+    <h2>6. Advertising &amp; Google AdMob</h2>
+    <p>
+        Rune Forge is supported by advertising delivered through the <strong>Google Mobile Ads SDK (AdMob)</strong>. Advertisements
+        consist of bottom banner ads during gameplay and occasional interstitial ads displayed between puzzle completions.
+    </p>
+    <ul>
+        <li><strong>Data Collection by Google:</strong> To serve ads, measure performance, and prevent fraud, the Google Mobile Ads SDK may collect and process device identifiers, Android Advertising ID (<code>AD_ID</code>), IP addresses (to determine coarse geographic location), and app interaction/diagnostic data in accordance with <a href="https://policies.google.com/technologies/ads">Google's Advertising Policies</a>.</li>
+        <li><strong>User Consent (UMP SDK):</strong> Rune Forge integrates Google's User Messaging Platform (UMP) SDK. In applicable jurisdictions (including the European Economic Area, the United Kingdom, and Switzerland), players are presented with a consent form to manage personalized versus non-personalized advertising choices.</li>
+        <li><strong>In-Game Privacy Controls:</strong> You can review and update your advertising privacy and consent choices at any time directly inside the game:
+            <code>⚙ Settings &rarr; 🛡 Ad Privacy &amp; Consent</code>
+        </li>
+        <li><strong>Ad-Free Sunday:</strong> Every Sunday based on your device's local calendar, all banner and interstitial advertising is automatically disabled in Rune Forge, providing an ad-free puzzle experience without requiring a subscription.</li>
+        <li><strong>Future Rewarded Ads Disclosure:</strong> Optional rewarded video advertisements offering in-game magical boons are planned for future content updates, but are <em>not currently implemented or active</em> in the present release.</li>
+    </ul>
+
+    <h2>7. Data Retention &amp; Cloud Deletion</h2>
+    <p>
+        Local gameplay data remains on your Android device until you clear application storage in Android Settings or uninstall the app.
+        Cloud profile records and leaderboard scores are retained while your anonymous account remains active.
+    </p>
+
+    <h3>In-Game Account &amp; Data Deletion</h3>
+    <p>
+        You have direct control to permanently delete your online data at any time from within Rune Forge:
+    </p>
+    <p>
+        <code>⚙ Settings &rarr; 👤 Player Profile &rarr; 🗑 Delete Online Cloud Data</code>
+    </p>
+    <p>
+        Selecting this option displays an explicit confirmation dialog. When confirmed:
+    </p>
+    <ul>
+        <li>Your private profile document (<code>users/{userId}</code>) is permanently deleted from Cloud Firestore.</li>
+        <li>Your associated leaderboard entries across all board sizes and categories are removed.</li>
+        <li>Your anonymous Firebase Authentication guest credentials are terminated.</li>
+        <li>Your local campaign progress on the device is preserved so you do not lose offline puzzle progress. If you restart the game online, a fresh anonymous guest profile will be initialized.</li>
+    </ul>
+
+    <h3>Manual / External Deletion Requests</h3>
+    <p>
+        If you have already uninstalled the application or cannot access the in-game deletion tool, you may request manual deletion
+        of any server-side records associated with your account by emailing Heltain at <a href="mailto:heltain.apps@gmail.com">heltain.apps@gmail.com</a>.
+        Please provide your in-game fantasy nickname or Account ID as shown in your Player Profile screen.
+    </p>
+
+    <h2>8. Security Practices</h2>
+    <p>
+        We employ technical measures to protect your information:
+    </p>
+    <ul>
+        <li>All network communications between Rune Forge and Google Firebase or AdMob servers use encrypted HTTPS/TLS connections in transit.</li>
+        <li>Cloud Firestore Security Rules strictly restrict read and write permissions on private player profiles to the authenticated owner.</li>
+        <li>Heltain does not sell, rent, or monetize your personal information to third-party data brokers.</li>
+    </ul>
+
+    <h2>9. Third-Party Service Providers</h2>
+    <p>
+        Rune Forge relies on Google LLC for backend infrastructure and advertising delivery. Please review their privacy documentation:
+    </p>
+    <ul>
+        <li><a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
+        <li><a href="https://firebase.google.com/support/privacy">Firebase Privacy &amp; Security Documentation</a></li>
+        <li><a href="https://policies.google.com/technologies/ads">Google AdMob &amp; Advertising Technologies</a></li>
+    </ul>
+
+    <h2>10. Children's Privacy</h2>
+    <p>
+        Rune Forge is a general-audience logic puzzle game. It is not specifically directed toward children under the age of 13
+        (or under 16 where applicable by local law), and Heltain does not knowingly collect personal information from children.
+    </p>
+
+    <h2>11. Changes to This Privacy Policy</h2>
+    <p>
+        We may update this Privacy Policy from time to time to reflect changes in game features, legal requirements, or technical architecture.
+        The effective date at the top of this page indicates the latest revision date.
+    </p>
+
+    <h2>12. Contact Us</h2>
+    <p>
+        If you have questions, feedback, or privacy-related requests regarding Rune Forge, please contact:
+    </p>
+    <p>
+        <strong>Heltain</strong><br>
+        Email: <a href="mailto:heltain.apps@gmail.com">heltain.apps@gmail.com</a>
+    </p>
+    <p>
+        <a href="/rune-forge/">Return to Rune Forge</a><br>
+        <a href="/">Return to Heltain Home</a>
+    </p>
+
+</main>
+
+<footer>
+    <div>&copy; 2026 Heltain</div>
+    <div>
+        <a href="/rune-forge/">Rune Forge</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="mailto:heltain.apps@gmail.com">Support</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="/">Home</a>
+    </div>
+</footer>
+
+</body>
+</html>
