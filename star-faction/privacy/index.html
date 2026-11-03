@@ -14,40 +14,70 @@
         header p { margin: .35rem 0 0; opacity: .9; }
         main { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; }
         h2 { margin-top: 2.2rem; margin-bottom: .5rem; }
+        h3 { margin-top: 1.5rem; margin-bottom: .35rem; }
         a { color: #176B51; }
         .updated { color: #666; }
+        code { background: #e8ece9; padding: .15rem .4rem; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; font-size: .92em; }
+        ul { padding-left: 1.4rem; }
+        li { margin-bottom: .4rem; }
         footer { max-width: 800px; margin: 0 auto; padding: 0 1.5rem 3rem; color: #666; font-size: .9rem; }
     </style>
 </head>
 <body>
 <header><div><h1>Star Faction: Ascension Privacy Policy</h1><p>Heltain</p></div></header>
 <main>
-    <p class="updated"><strong>Effective date:</strong> October 26, 2026</p>
-    <p>Star Faction: Ascension is an Android space shooter published by Heltain. This policy explains how the game handles gameplay records and, when enabled, Google Play Games Services features such as sign-in, leaderboards, and achievements.</p>
-    <h2>Playing the game and signing in</h2>
-    <p>You can play without signing in to Google Play Games. If you use Play Games features, Google handles authentication and provides a player identity for leaderboards and achievements. The game may access your Play Games player identifier, display name, and profile information made available by Google to provide these features.</p>
-    <h2>Gameplay information</h2>
-    <p>The game saves gameplay information such as high scores, highest wave reached, unlocked achievements, and preferences on your device. If Play Games features are enabled and you sign in, eligible high scores and achievement unlocks are submitted to Google Play Games Services. The game may locally retain pending submissions until connectivity is restored.</p>
-    <h2>Leaderboards and friends</h2>
-    <p>Google Play Games provides public and friends leaderboards. When you access these features, the game requests leaderboard entries, including available player names, rankings, and scores. Friends information is subject to Google's permissions and sharing settings. The game may save limited previous leaderboard results on your device to identify changes in rankings between sessions.</p>
-    <p>Your score and Play Games profile information may be visible to other players according to the leaderboard's visibility settings and your Google Play Games privacy controls.</p>
-    <h2>Third-party services and sharing</h2>
-    <p>Star Faction: Ascension uses Google Play Games Services for optional online game features. Information sent to Google through those features is processed under Google's applicable policies. Heltain does not operate a separate game-account server or an independent friends/leaderboard database for these features.</p>
-    <p>Learn about Google's privacy practices in the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
-    <h2>Advertising and notifications</h2>
-    <p>Star Faction: Ascension does not currently include advertising or a custom push-notification system for friends' scores. In-game ranking updates may be displayed when you open the game or view the leaderboards.</p>
-    <h2>Storage, security, and retention</h2>
-    <p>Local gameplay records and preferences remain on your device until they are reset, application data is cleared, or the app is uninstalled, subject to any Android backup settings. Google Play Games records are retained and handled by Google according to its policies and account controls. Heltain does not have a separate server-side copy of your Play Games records to delete.</p>
-    <h2>Your choices and deletion</h2>
-    <p>You may play without using Google Play Games. You can manage Google Play Games permissions and data through your Google account and Play Games settings. You may clear local application data or uninstall the game to remove locally stored game records, subject to device backup behavior. Removing local data does not automatically remove data held by Google Play Games.</p>
+    <p class="updated"><strong>Effective date:</strong> November 3, 2026</p>
+    <p><strong>Star Faction: Ascension</strong> (Android package <code>com.heltain.spaceshooter</code>) is an Android space shooter published by <strong>Heltain</strong>. This policy explains how the game handles gameplay records, Firebase-backed online competitive features (pilot profiles, optional Google account linking, leaderboards, player search, Following, and achievements), usage analytics, and profile deletion.</p>
+
+    <h2>Pilot profiles and optional Google account linking</h2>
+    <p>You can play Star Faction: Ascension without providing your name, email address, or password. When online services initialize, the game uses <strong>Google Firebase Authentication</strong> to create an anonymous guest pilot profile with a randomly generated sci-fi callsign (nickname) and a permanent player code formatted as <code>#XXXX-XXXX</code>. You can generate a new random callsign at any time from the in-game <code>PILOT PROFILE</code> menu while keeping your player code and records.</p>
+    <p>Optionally, you may link your pilot profile to your <strong>Google Account</strong> using Google Sign-In (<code>Main Menu &rarr; PILOT PROFILE &rarr; LINK GOOGLE ACCOUNT</code>) so that you can recover your pilot profile, leaderboard records, Following list, and cloud achievements if you switch devices or reinstall the game. When you link a Google Account, Firebase Authentication associates your Google account identifier with your Star Faction profile to authenticate and recover your account.</p>
+
+    <h2>Public vs. private profile information</h2>
+    <ul>
+        <li><strong>Publicly visible to other players:</strong> Your generated pilot callsign (nickname), your permanent player code (<code>#XXXX-XXXX</code>), and your submitted leaderboard scores, highest wave reached, and rankings are visible to other players on leaderboards and through in-game player search (<code>FIND PILOT</code>).</li>
+        <li><strong>Private and internal account information:</strong> Linked Google Account email addresses, real names, and Google account identifiers are not displayed publicly to other players, nor are your Following list of tracked pilots, your individual cloud achievement unlock records, or your local device settings. Your Firebase Authentication user ID (UID) is an internal account identifier used by the application's backend and is not intentionally displayed as a player-facing identity in the game interface, though it may be used in underlying backend document identifiers or service responses that support leaderboards and player discovery.</li>
+    </ul>
+
+    <h2>Gameplay records, leaderboards, Following, and achievements</h2>
+    <p>The game stores gameplay records such as your high score, highest wave reached, unlocked achievements, Boss Core progression, and settings on your device. If you play offline, eligible high scores and achievement unlocks are queued locally on your device and synchronized when internet connectivity is available.</p>
+    <p>When online features are active, the game uses <strong>Google Cloud Firestore</strong> and <strong>Firebase Cloud Functions</strong> to validate and store competitive records:</p>
+    <ul>
+        <li><strong>Leaderboards and score submissions:</strong> Eligible run completions are sent to a backend Cloud Function that validates run parameters (such as score, highest wave reached, run duration, and run identifier) and updates Daily, Weekly, and All-Time leaderboards.</li>
+        <li><strong>Player search and Following:</strong> Players can search for other pilots by callsign prefix or exact player code (<code>#XXXX-XXXX</code>) and maintain a one-way Following list (up to 100 pilots) to compare scores on the Following leaderboard. Following another pilot does not require mutual approval and only displays that pilot's public leaderboard entries.</li>
+        <li><strong>Cloud achievements:</strong> Unlocking any of the game's 13 achievements records the unlock in your cloud profile so your trophies persist across sessions and linked devices.</li>
+    </ul>
+
+    <h2>Analytics and usage measurement</h2>
+    <p>Star Faction: Ascension uses <strong>Google Firebase Analytics</strong> to help Heltain understand game usage, session frequency and duration, player retention, and gameplay progression (such as runs started, runs completed, wave milestones reached, and boss defeats).</p>
+    <ul>
+        <li><strong>Installation and device measurement data:</strong> Firebase Analytics is not completely anonymous at the installation level; to measure active users, sessions, and retention, the Firebase Analytics SDK may process app-instance identifiers (such as a Firebase App Instance ID or Installation ID), general device and Android OS information, and app engagement data.</li>
+        <li><strong>Custom gameplay event parameters:</strong> Custom gameplay events logged by the game do not deliberately contain your Firebase UID, pilot callsign, public player code (<code>#XXXX-XXXX</code>), Google Account email address, or Google account identifiers.</li>
+        <li><strong>No Advertising ID or ad personalization:</strong> Collection of the Android Advertising ID (<code>AD_ID</code>), ad storage, and ad personalization signals are disabled in the current Android implementation, and the Android Advertising ID permission is excluded from the app. Star Faction: Ascension does not display third-party advertising.</li>
+    </ul>
+
+    <h2>Third-party service providers and security</h2>
+    <p>Star Faction: Ascension uses Google Firebase services (Firebase Authentication, Cloud Firestore, Cloud Functions for Firebase, and Firebase Analytics) as service providers to operate authentication, competitive features, and usage analytics. All network traffic between the app and Firebase is encrypted in transit using HTTPS/TLS. Heltain does not sell personal data or share player data with advertising networks or data brokers.</p>
+    <p>Learn more about Google's data practices in the <a href="https://policies.google.com/privacy">Google Privacy Policy</a> and <a href="https://firebase.google.com/support/privacy">Privacy and Security in Firebase</a>.</p>
+
+    <h2>Data retention and profile deletion</h2>
+    <p>Local gameplay data remains on your device until you delete your pilot profile in-game, clear the application's storage in Android Settings, or uninstall the app. Cloud profile records, leaderboard scores, Following lists, and cloud achievements are retained while your pilot profile remains active.</p>
+    <p><strong>In-game deletion:</strong> You can permanently delete your Star Faction pilot profile and associated cloud data at any time directly inside the game:</p>
+    <p><code>Main Menu &rarr; PILOT PROFILE &rarr; DELETE PILOT PROFILE</code></p>
+    <p>Confirming deletion invokes a backend Cloud Function that deletes your active Star Faction Firebase Authentication account, private and public player profiles, player code reservation (<code>#XXXX-XXXX</code>), Daily/Weekly/All-Time leaderboard entries, Following list, cloud achievements, and score submission history. On your device, in-game deletion removes the account-specific local records and pending synchronization queues associated with that pilot profile, without necessarily removing every unrelated application preference or device setting. To remove all local application files and settings from your device, clear the app's storage in Android Settings or uninstall the game. If your profile was linked to a Google Account, deleting your Star Faction profile removes its connection to your Google Account and deletes your Star Faction game data, but <strong>does not delete or affect your underlying Google Account</strong>.</p>
+    <p><strong>External deletion requests:</strong> If you no longer have the game installed, you can review deletion instructions and submit a manual deletion request by contacting support as described on our <a href="https://heltain.github.io/star-faction/delete-account/">Pilot Profile Deletion</a> page. Because pilot callsigns and player codes are publicly visible on leaderboards, a player code or callsign alone is not sufficient proof of account ownership, and additional verification may be required before a manual deletion request is completed.</p>
+    <p><strong>Retention exceptions and provider logging:</strong> Deleting your pilot profile removes your active Star Faction Firebase Authentication account and the associated Cloud Firestore game records described above. It does not immediately purge ordinary infrastructure, diagnostic, or security logs maintained by Google Cloud / Firebase, records subject to legal or security retention requirements, or previously collected aggregate Firebase Analytics measurement information, which are handled by Google under its applicable service retention policies.</p>
+
     <h2>Children's privacy</h2>
-    <p>Star Faction: Ascension is not specifically designed or marketed for children. Access to Play Games features may depend on age, account supervision, and Google's requirements.</p>
+    <p>Star Faction: Ascension is not specifically designed or marketed for children, and Heltain does not knowingly collect personal information from children.</p>
+
     <h2>Changes to this policy</h2>
     <p>This policy may change if the game's functionality or data practices change. The effective date above will be updated when it does.</p>
+
     <h2>Contact</h2>
-    <p>For questions about privacy or the game, contact:</p>
+    <p>For questions about privacy, profile deletion, or the game, contact:</p>
     <p><strong>Heltain</strong><br>Email: <a href="mailto:heltain.apps@gmail.com">heltain.apps@gmail.com</a></p>
-    <p><a href="/star-faction/support/">Star Faction Support</a><br><a href="/">Return to Heltain</a></p>
+    <p><a href="https://heltain.github.io/star-faction/delete-account/">Pilot Profile Deletion</a><br><a href="/star-faction/support/">Star Faction Support</a><br><a href="/">Return to Heltain</a></p>
 
 </main>
 <footer>&copy; 2026 Heltain</footer>
