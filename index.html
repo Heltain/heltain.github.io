@@ -73,6 +73,10 @@
 
         .links {
             margin-top: 1.25rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            row-gap: 0.5rem;
         }
 
         a {
@@ -117,8 +121,17 @@
         }
 
         .separator {
-            margin: 0 0.5rem;
+            margin: 0 0.35rem;
             color: #888;
+        }
+
+        @media (max-width: 436px) {
+            .separator-wrap {
+                flex-basis: 100%;
+                height: 0;
+                margin: 0;
+                visibility: hidden;
+            }
         }
 
         footer {
@@ -179,14 +192,19 @@
         </article>
 
         <article class="app">
+            <a href="/star-faction/" class="app-preview-link">
+                <img src="/star-faction/images/splash.png" alt="Star Faction: Ascension splash screen artwork" class="app-preview-img">
+            </a>
             <h2>Star Faction: Ascension</h2>
             <p>
                 A fast-paced Android space shooter with three enemy factions,
                 challenging bosses, and endless survival.
             </p>
             <div class="links">
-                <a href="/star-faction/privacy/">Privacy Policy</a>
+                <a href="/star-faction/" class="btn-play">Explore Game</a>
                 <span class="separator">•</span>
+                <a href="/star-faction/privacy/">Privacy Policy</a>
+                <span class="separator separator-wrap">•</span>
                 <a href="/star-faction/support/">Support</a>
             </div>
         </article>

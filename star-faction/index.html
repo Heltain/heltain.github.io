@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Faction: Ascension | Heltain</title>
+    <meta name="description" content="Star Faction: Ascension is a fast-paced portrait-mode Android space shooter featuring three distinct enemy factions, multi-phase boss encounters, weapon upgrades, cloud achievements, and online leaderboards.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f8f7;
+            color: #202421;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        header {
+            background: #176B51;
+            color: white;
+            padding: 3rem 1.5rem 2.5rem;
+            text-align: center;
+        }
+
+        header div {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.6rem;
+            letter-spacing: 0.04em;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.15rem;
+            opacity: 0.92;
+        }
+
+        .breadcrumbs {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+
+        a {
+            color: #176B51;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .hero-card {
+            background: white;
+            border: 1px solid #e1e5e2;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-header {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .app-icon {
+            width: 84px;
+            height: 84px;
+            border-radius: 18px;
+            border: 1px solid #e1e5e2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
+        }
+
+        .hero-title-area h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #176B51;
+        }
+
+        .hero-title-area p {
+            margin: 0.25rem 0 0;
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8ece9;
+            color: #202421;
+            padding: 0.2rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-status {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #176B51;
+            color: #ffffff;
+            padding: 0.65rem 1.35rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            background: #12543f;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: white;
+            color: #176B51;
+            border: 1px solid #176B51;
+            padding: 0.65rem 1.35rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f7f4;
+            text-decoration: none;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid #e1e5e2;
+            border-radius: 12px;
+            padding: 1.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-card h2 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: #176B51;
+            font-size: 1.5rem;
+        }
+
+        .section-card h3 {
+            margin-top: 1.4rem;
+            margin-bottom: 0.35rem;
+            font-size: 1.15rem;
+            color: #202421;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .feature-item {
+            background: #fcfdfc;
+            border: 1px solid #e8ede9;
+            border-radius: 8px;
+            padding: 1.2rem;
+        }
+
+        .feature-item h3 {
+            margin-top: 0;
+            margin-bottom: 0.4rem;
+            color: #176B51;
+            font-size: 1.1rem;
+        }
+
+        .feature-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .tier-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 0.5rem;
+        }
+
+        .tier-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        .tier-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tier-title {
+            font-weight: 600;
+            color: #202421;
+        }
+
+        .tier-meta {
+            color: #666;
+            font-size: 0.92rem;
+        }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+            max-width: 360px;
+        }
+
+        .screenshot-card {
+            background: #fcfdfc;
+            border: 1px solid #e1e5e2;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid #e8ede9;
+        }
+
+        .screenshot-card figcaption {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: #555;
+            background: white;
+            line-height: 1.4;
+        }
+
+        .callout {
+            background: #eef7f3;
+            border-left: 4px solid #176B51;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.25rem 0;
+            font-size: 0.98rem;
+        }
+
+        footer {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 3rem;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e1e5e2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        footer div {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>Star Faction: Ascension</h1>
+        <p>Heltain &bull; Arcade Space Shooter for Android</p>
+    </div>
+</header>
+
+<div class="breadcrumbs">
+    <a href="/">&larr; Return to Heltain</a>
+</div>
+
+<main>
+
+    <section class="hero-card">
+        <div class="hero-header">
+            <img src="/star-faction/images/icon.png" alt="Star Faction: Ascension icon" class="app-icon">
+            <div class="hero-title-area">
+                <h2>Star Faction: Ascension</h2>
+                <p>Three Enemy Factions. Relentless Bosses. Endless Survival.</p>
+                <div class="badges">
+                    <span class="badge">Android</span>
+                    <span class="badge">Portrait Arcade Shooter</span>
+                    <span class="badge">Ad-Free</span>
+                    <span class="badge badge-status">Google Play Testing</span>
+                </div>
+            </div>
+        </div>
+
+        <p>
+            <strong>Star Faction: Ascension</strong> is a fast-paced portrait-mode space shooter built for responsive
+            one-handed play on Android. Pilot an evolving strike fighter through escalating combat sectors, adapt to
+            three distinct enemy factions, dismantle multi-phase capital bosses, and climb global survival leaderboards.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#features" class="btn-primary">Game Features</a>
+            <a href="/star-faction/privacy/" class="btn-secondary">Privacy Policy</a>
+            <a href="/star-faction/support/" class="btn-secondary">Support</a>
+        </div>
+    </section>
+
+    <section class="section-card" id="features">
+        <h2>Game Features</h2>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <h3>Three Enemy Factions</h3>
+                <p>Battle armored Iron Syndicate warships, aggressive Void Swarm formations, and precision Aether Dominion constructs.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Multi-Phase Bosses</h3>
+                <p>Confront screen-filling capital bosses with destructible subsystems, shield beacons, and evolving attack patterns.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Evolving Weapon Cores</h3>
+                <p>Collect mid-run weapon upgrades, switch firing cores, and deploy autonomous combat drones to survive deeper waves.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Endless Ascension Scaling</h3>
+                <p>Defeating all three faction bosses loops the campaign into higher Ascension cycles with intensified enemy firepower.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Global &amp; Following Leaderboards</h3>
+                <p>Compete across All-Time, Weekly, and Daily rankings, or search by pilot callsign and player code to follow rivals.</p>
+            </div>
+
+            <div class="feature-item">
+                <h3>Zero Ads or Clutter</h3>
+                <p>Pure arcade gameplay with no advertisements, no energy timers, and full offline playability whenever you are disconnected.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2>Enemy Factions &amp; Capital Bosses</h2>
+        <p>
+            Each combat sector introduces a new hostile faction culminating in a multi-stage flagship encounter:
+        </p>
+
+        <ul class="tier-list">
+            <li>
+                <div class="tier-title">Sector I &mdash; Iron Syndicate</div>
+                <div class="tier-meta">Heavy Armor &bull; Ballistic Salvos &bull; Flagship: Dreadnought MK-I</div>
+                <p style="margin: 0.35rem 0 0; font-size: 0.95rem; color: #444;">
+                    Industrial gunships and interceptor squadrons backed by a heavily plated dreadnought armed with twin stabilizers and sweeping artillery.
+                </p>
+            </li>
+            <li>
+                <div class="tier-title">Sector II &mdash; Void Swarm</div>
+                <div class="tier-meta">High-Speed Flankers &bull; Bio-Plasma Barrages &bull; Flagship: Hive Leviathan</div>
+                <p style="margin: 0.35rem 0 0; font-size: 0.95rem; color: #444;">
+                    Relentless razorwing packs and brood carriers commanded by an apex leviathan that spawns escort waves and corrosive spreads.
+                </p>
+            </li>
+            <li>
+                <div class="tier-title">Sector III &mdash; Aether Dominion</div>
+                <div class="tier-meta">Prismatic Beams &bull; Shield Matrix Tech &bull; Flagship: Celestial Arbiter</div>
+                <p style="margin: 0.35rem 0 0; font-size: 0.95rem; color: #444;">
+                    Precision prism darts, halo sentinels, and arc weavers guarding the Celestial Arbiter and its rotating orbital shield segments.
+                </p>
+            </li>
+        </ul>
+    </section>
+
+    <section class="section-card">
+        <h2>Pilot Profiles, Leaderboards &amp; Cloud Sync</h2>
+        <p>
+            Star Faction: Ascension features built-in <strong>Pilot Profiles</strong> powered by Google Firebase so you can play immediately without mandatory sign-in prompts:
+        </p>
+        <ul>
+            <li><strong>Instant Guest Pilot Profile:</strong> Every installation automatically receives a curated sci-fi pilot callsign and a unique 8-character player code (<code>#XXXX-XXXX</code>).</li>
+            <li><strong>Optional Google Account Linking:</strong> Link your Google Account at any time from the in-game <strong>PILOT PROFILE</strong> menu to protect and recover your pilot identity across devices.</li>
+            <li><strong>Player Search &amp; Following:</strong> Look up other pilots by callsign or player code to build your custom <strong>Following</strong> leaderboard alongside the <strong>Global</strong> All-Time, Weekly, and Daily boards.</li>
+            <li><strong>Cloud Achievements &amp; Full Data Control:</strong> Unlock 13 combat achievements backed up to the cloud, reroll your callsign whenever you like, or permanently delete your pilot profile and all cloud records directly in-game via <code>Main Menu &rarr; PILOT PROFILE &rarr; DELETE PILOT PROFILE</code> (or learn more on our <a href="/star-faction/delete-account/">Pilot Profile Deletion</a> page).</li>
+        </ul>
+    </section>
+
+    <section class="section-card">
+        <h2>Visual Showcase</h2>
+        <div class="screenshots">
+            <figure class="screenshot-card">
+                <img src="/star-faction/images/splash.png" alt="Star Faction: Ascension splash screen artwork">
+                <figcaption>Star Faction: Ascension key artwork featuring the player strike fighter.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2>Support &amp; Contact</h2>
+        <div class="callout">
+            <strong>Need Assistance?</strong> Visit the <a href="/star-faction/support/">Star Faction Support</a> page or contact us directly at <a href="mailto:heltain.apps@gmail.com">heltain.apps@gmail.com</a>.
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div>&copy; 2026 Heltain</div>
+    <div>
+        <a href="/star-faction/privacy/">Privacy Policy</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="/star-faction/support/">Support</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="/star-faction/delete-account/">Delete Profile</a>
+        <span style="margin: 0 0.5rem; color: #888;">&bull;</span>
+        <a href="/">Home</a>
+    </div>
+</footer>
+
+</body>
+</html>
